@@ -1,4 +1,4 @@
-![image](https://raw.githubusercontent.com/RodrigoAngeloValentini/mba-marketplace-frontend/refs/heads/main/assets/banner.png)
+![image](https://raw.githubusercontent.com/RodrigoAngeloValentini/mba-marketplace-frontend/refs/heads/main/docs/banner.png)
 
 # Projeto Gestão de Marketplace
 
@@ -13,7 +13,7 @@ Esse é um dos desafios prático do MBA Full-Stack, um dos conteúdos disponíve
 - React Router DOM
 - Axios
 - React Query
-- zod
+- Zod
 - Recharts
 
 [🎨 View the Figma Design](https://www.figma.com/community/file/1405890943950015706/gestao-de-marketplace)
