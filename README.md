@@ -1,4 +1,4 @@
-![image](https://raw.githubusercontent.com/RodrigoAngeloValentini/mba-marketplace-frontend/refs/heads/main/docs/banner.png)
+![image](https://raw.githubusercontent.com/RodrigoAngeloValentini/mba-marketplace-frontend/refs/heads/master/docs/banner.png)
 
 # Projeto Gestão de Marketplace
 
