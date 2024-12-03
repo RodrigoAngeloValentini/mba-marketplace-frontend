@@ -1,4 +1,6 @@
 import * as Input from '@/components/ui/Input'
+import * as Select from '@/components/ui/Select'
+import {Textarea} from '@/components/ui/TextArea'
 import {Card, CardContent, CardHeader, CardTitle} from '@/components/ui/Card'
 import {UserAccountIcon} from 'hugeicons-react'
 import {Helmet} from 'react-helmet-async'
@@ -53,16 +55,60 @@ export function ProductNew() {
               <CardContent className="space-y-1 w-full h-[300px]">
                 <div className="flex gap-3">
                   <Input.Root>
+                    <Input.Control
+                      id="title"
+                      type="text"
+                      name="title"
+                      defaultValue=""
+                    />
+                  </Input.Root>
+                </div>
+
+                <div className="flex gap-3">
+                  <Input.Root>
                     <Input.Prefix>
                       <UserAccountIcon className="h-5 w-5 text-zinc-500" />
                     </Input.Prefix>
                     <Input.Control
-                      id="email"
-                      type="email"
-                      name="email"
-                      defaultValue="diego.schell.f@gmail.com"
+                      id="value"
+                      type="text"
+                      name="value"
+                      defaultValue=""
                     />
                   </Input.Root>
+                </div>
+
+                <div className="flex gap-3">
+                  <Input.Root>
+                    <Input.Control
+                      id="value"
+                      type="text"
+                      name="value"
+                      defaultValue=""
+                    />
+                  </Input.Root>
+                </div>
+
+                <div>
+                  <Textarea
+                    name="description"
+                    id="description"
+                    defaultValue=""
+                  />
+                </div>
+
+                <div className="flex gap-3">
+                  <Select.Root name="timezone">
+                    <Select.Trigger>
+                      <Select.Value placeholder="Selecione a categoria" />
+                    </Select.Trigger>
+
+                    <Select.Content>
+                      <Select.Item value="utc-3">
+                        <Select.ItemText>Móvel</Select.ItemText>
+                      </Select.Item>
+                    </Select.Content>
+                  </Select.Root>
                 </div>
               </CardContent>
             </Card>
