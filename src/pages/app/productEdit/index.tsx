@@ -1,4 +1,4 @@
-import {Card, CardContent, CardHeader, CardTitle} from '@/components/ui/card'
+import {Card, CardContent, CardHeader, CardTitle} from '@/components/ui/Card'
 import {Helmet} from 'react-helmet-async'
 
 export function ProductEdit() {

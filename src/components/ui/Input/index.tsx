@@ -7,7 +7,7 @@ export type InputProps = React.InputHTMLAttributes<HTMLInputElement>
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({className, type, ...props}, ref) => {
     return (
-      <>
+      <>    
         <input
           type={type}
           className={cn(
@@ -24,3 +24,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 Input.displayName = 'Input'
 
 export {Input}
+
+import { Root, RootProps } from './Root'
+import { Prefix, PrefixProps } from './Prefix'
+import { Control, ControlProps } from './Control'
+
+export { Root, Prefix, Control }
+export type { RootProps, PrefixProps, ControlProps }

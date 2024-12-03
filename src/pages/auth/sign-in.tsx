@@ -6,9 +6,9 @@ import {toast} from 'sonner'
 import {z} from 'zod'
 
 import {signIn} from '@/api/sign-in'
-import {Button} from '@/components/ui/button'
-import {Input} from '@/components/ui/input'
-import {Label} from '@/components/ui/label'
+import {Button} from '@/components/ui/Button'
+import {Input} from '@/components/ui/Input'
+import {Label} from '@/components/ui/Label'
 
 const signInForm = z.object({
   email: z.string().email(),

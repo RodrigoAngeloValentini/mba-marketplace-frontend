@@ -1,4 +1,6 @@
-import {Card, CardContent, CardHeader, CardTitle} from '@/components/ui/card'
+import * as Input from '@/components/ui/Input'
+import {Card, CardContent, CardHeader, CardTitle} from '@/components/ui/Card'
+import {UserAccountIcon} from 'hugeicons-react'
 import {Helmet} from 'react-helmet-async'
 import {useForm} from 'react-hook-form'
 import {z} from 'zod'
@@ -22,7 +24,7 @@ export function ProductNew() {
       title: '',
       value: '',
       description: '',
-      category: null,
+      category: null
     }
   })
 
@@ -48,7 +50,21 @@ export function ProductNew() {
                   Dados do produto
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-1 w-full h-[300px]"></CardContent>
+              <CardContent className="space-y-1 w-full h-[300px]">
+                <div className="flex gap-3">
+                  <Input.Root>
+                    <Input.Prefix>
+                      <UserAccountIcon className="h-5 w-5 text-zinc-500" />
+                    </Input.Prefix>
+                    <Input.Control
+                      id="email"
+                      type="email"
+                      name="email"
+                      defaultValue="diego.schell.f@gmail.com"
+                    />
+                  </Input.Root>
+                </div>
+              </CardContent>
             </Card>
           </div>
         </div>

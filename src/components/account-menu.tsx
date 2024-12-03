@@ -14,7 +14,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger
-} from './ui/dropdown-menu'
+} from './ui/DropdownMenu'
 
 export function AccountMenu() {
   const navigate = useNavigate()

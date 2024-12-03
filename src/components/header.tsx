@@ -3,7 +3,7 @@ import {NavLink} from './nav-link'
 import {ChartHistogramIcon, PackageIcon} from 'hugeicons-react'
 
 import Logo from '@/assets/LogoMini.svg'
-import {Button} from './ui/button'
+import {Button} from './ui/Button'
 import {useNavigate} from 'react-router-dom'
 
 export function Header() {
