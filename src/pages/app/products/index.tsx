@@ -46,7 +46,7 @@ export function Products() {
     <>
       <Helmet title="Dashboard" />
 
-      <div className="flex flex-col gap-6 px-4 md:px-8 lg:px-16 max-w-full overflow-hidden">
+      <div className="flex flex-col gap-4">
         {/* Header Section */}
         <div className="pb-4">
           <p className="text-gray-500 font-medium text-lg">Seus produtos</p>
