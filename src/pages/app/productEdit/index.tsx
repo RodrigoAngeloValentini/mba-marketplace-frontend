@@ -9,7 +9,7 @@ export function ProductEdit() {
       <div className="flex flex-col gap-4">
         <div className="pb-4">
           <p className="text-gray-500 font-medium text-lg">Editar produto</p>
-          <p className="text-gray-400 font-normal text-sm">
+          <p className="text-gray-300 font-normal">
             Gerencie as informações do produto cadastrado
           </p>
         </div>

@@ -10,7 +10,7 @@ export function Dashboard() {
 
       <div className="flex flex-col gap-4">
         <div className="pb-4">
-          <p className="text-gray-500 font-medium">Últimos 30 dias</p>
+          <p className="text-gray-500 font-medium text-lg">Últimos 30 dias</p>
           <p className="text-gray-300 font-normal">
             Confira as estatísticas da sua loja no último mês
           </p>

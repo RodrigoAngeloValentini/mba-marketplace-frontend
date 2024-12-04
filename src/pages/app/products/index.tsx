@@ -50,7 +50,7 @@ export function Products() {
         {/* Header Section */}
         <div className="pb-4">
           <p className="text-gray-500 font-medium text-lg">Seus produtos</p>
-          <p className="text-gray-400 font-normal text-sm">
+          <p className="text-gray-300 font-normal">
             Acesse e gerencie a sua lista de produtos à venda
           </p>
         </div>

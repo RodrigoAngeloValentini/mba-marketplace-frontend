@@ -1,11 +1,12 @@
 import * as Input from '@/components/ui/Input'
 import * as Select from '@/components/ui/Select'
-import {Textarea} from '@/components/ui/TextArea'
+import * as TextArea from '@/components/ui/TextArea'
+import * as FileInput from '@/components/ui/FileInput'
 import {Card, CardContent, CardHeader, CardTitle} from '@/components/ui/Card'
-import {UserAccountIcon} from 'hugeicons-react'
 import {Helmet} from 'react-helmet-async'
 import {useForm} from 'react-hook-form'
 import {z} from 'zod'
+import {Button} from '@/components/ui/Button'
 
 const productNewForm = z.object({
   title: z.string(),
@@ -37,13 +38,21 @@ export function ProductNew() {
       <div className="flex flex-col gap-4">
         <div className="pb-4">
           <p className="text-gray-500 font-medium text-lg">Novo produto</p>
-          <p className="text-gray-400 font-normal text-sm">
+          <p className="text-gray-300 font-normal">
             Cadastre um produto para venda no marketplace
           </p>
         </div>
 
         <div className="flex flex-row gap-6 items-start">
-          <div className="w-full md:w-1/4"></div>
+          <div className="w-full md:w-1/4">
+            <FileInput.Root
+              id="photo"
+              className="flex flex-col items-start gap-5 lg:flex-row">
+              <FileInput.ImagePreview />
+              <FileInput.Trigger />
+              <FileInput.Control accept="image/*" />
+            </FileInput.Root>
+          </div>
 
           <div className="flex-1">
             <Card className="w-full">
@@ -52,63 +61,82 @@ export function ProductNew() {
                   Dados do produto
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-1 w-full h-[300px]">
-                <div className="flex gap-3">
+              <CardContent className="w-full h-auto gap-5">
+                <div className="mb-5">
+                  <Input.Label>Título</Input.Label>
                   <Input.Root>
                     <Input.Control
                       id="title"
                       type="text"
                       name="title"
                       defaultValue=""
+                      placeholder="Nome do produto"
                     />
                   </Input.Root>
                 </div>
 
-                <div className="flex gap-3">
+                <div className="mb-5">
+                  <Input.Label>Valor</Input.Label>
                   <Input.Root>
                     <Input.Prefix>
-                      <UserAccountIcon className="h-5 w-5 text-zinc-500" />
+                      <span className="text-orange-base">R$</span>
                     </Input.Prefix>
                     <Input.Control
                       id="value"
                       type="text"
                       name="value"
                       defaultValue=""
+                      placeholder="0,00"
                     />
                   </Input.Root>
                 </div>
 
-                <div className="flex gap-3">
-                  <Input.Root>
-                    <Input.Control
-                      id="value"
-                      type="text"
-                      name="value"
+                <div className="mb-5">
+                  <TextArea.Label>Descrição</TextArea.Label>
+                  <TextArea.Root>
+                    <TextArea.Control
+                      name="description"
+                      id="description"
                       defaultValue=""
+                      placeholder="Escreva detalhes sobre o produto, tamanho, características"
                     />
-                  </Input.Root>
+                  </TextArea.Root>
                 </div>
 
-                <div>
-                  <Textarea
-                    name="description"
-                    id="description"
-                    defaultValue=""
-                  />
-                </div>
-
-                <div className="flex gap-3">
-                  <Select.Root name="timezone">
+                <div className="mb-5">
+                  <Input.Label>Categoria</Input.Label>
+                  <Select.Root name="category">
                     <Select.Trigger>
-                      <Select.Value placeholder="Selecione a categoria" />
+                      <Select.Value placeholder="Selecione" />
                     </Select.Trigger>
 
                     <Select.Content>
-                      <Select.Item value="utc-3">
-                        <Select.ItemText>Móvel</Select.ItemText>
+                      <Select.Item value="1">
+                        <Select.ItemText>Category 1</Select.ItemText>
+                      </Select.Item>
+                      <Select.Item value="2">
+                        <Select.ItemText>Category 2</Select.ItemText>
                       </Select.Item>
                     </Select.Content>
                   </Select.Root>
+                </div>
+
+                <div className="flex flex-row justify-between pt-8 gap-8">
+                  <Button
+                    variant="outline"
+                    disabled={isSubmitting}
+                    className="w-full"
+                    type="button">
+                    Cancelar
+                  </Button>
+
+                  <Button
+                    variant="default"
+                    disabled={isSubmitting}
+                    className="w-full"
+                    type="submit">
+                    Salvar e publicar
+                  </Button>
                 </div>
               </CardContent>
             </Card>

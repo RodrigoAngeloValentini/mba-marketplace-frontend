@@ -1,5 +1,5 @@
 import * as Select from '@radix-ui/react-select'
-import { CheckmarkBadge01Icon } from 'hugeicons-react'
+import { Tick02Icon } from 'hugeicons-react'
 import { ComponentProps } from 'react'
 
 export interface ItemProps extends ComponentProps<typeof Select.Item> {}
@@ -7,13 +7,13 @@ export interface ItemProps extends ComponentProps<typeof Select.Item> {}
 export function Item({ children, ...props }: ItemProps) {
   return (
     <Select.Item
-      className="flex items-center gap-2 px-3 py-2.5 data-[highlighted]:bg-zinc-50 data-[highlighted]:outline-none dark:data-[highlighted]:bg-zinc-700"
+      className="flex items-center gap-2 px-2 py-2"
       {...props}
     >
       {children}
 
       <Select.ItemIndicator className="ml-auto">
-        <CheckmarkBadge01Icon className="h-4 w-4 text-violet-500 dark:text-violet-300" />
+        <Tick02Icon className="h-4 w-4 text-orange-base"/>
       </Select.ItemIndicator>
     </Select.Item>
   )
