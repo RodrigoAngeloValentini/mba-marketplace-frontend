@@ -7,8 +7,8 @@ import {z} from 'zod'
 
 import {signUp} from '@/api/sign-up'
 import {Button} from '@/components/ui/Button'
-import {Input} from '@/components/ui/Input'
-import {Label} from '@/components/ui/Label'
+import * as Input from '@/components/ui/Input'
+import {AccessIcon, Mail02Icon, UserIcon, CallIcon} from 'hugeicons-react'
 
 const signUpForm = z.object({
   name: z.string(),
@@ -83,23 +83,33 @@ export function SignUp() {
               </h4>
 
               <div className="mb-5">
-                <Label htmlFor="name">NOME</Label>
-                <Input
-                  id="name"
-                  type="default"
-                  {...register('name')}
-                  placeholder="Seu nome completo"
-                />
+                <Input.Label>NOME</Input.Label>
+                <Input.Root>
+                  <Input.Prefix>
+                    <UserIcon className="text-gray-200" size={24} />
+                  </Input.Prefix>
+                  <Input.Control
+                    id="name"
+                    type="default"
+                    {...register('name')}
+                    placeholder="Seu nome completo"
+                  />
+                </Input.Root>
               </div>
 
               <div className="mb-5">
-                <Label htmlFor="phone">TELEFONE</Label>
-                <Input
-                  id="phone"
-                  type="tel"
-                  {...register('phone')}
-                  placeholder="(00) 00000-0000"
-                />
+                <Input.Label>TELEFONE</Input.Label>
+                <Input.Root>
+                  <Input.Prefix>
+                    <CallIcon className="text-gray-200" size={24} />
+                  </Input.Prefix>
+                  <Input.Control
+                    id="phone"
+                    type="tel"
+                    {...register('phone')}
+                    placeholder="(00) 00000-0000"
+                  />
+                </Input.Root>
               </div>
             </div>
 
@@ -109,33 +119,48 @@ export function SignUp() {
               </h4>
 
               <div className="mb-5">
-                <Label htmlFor="email">E-MAIL</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  {...register('email')}
-                  placeholder="Seu e-mail de acesso"
-                />
+                <Input.Label>E-MAIL</Input.Label>
+                <Input.Root>
+                  <Input.Prefix>
+                    <Mail02Icon className="text-gray-200" size={24} />
+                  </Input.Prefix>
+                  <Input.Control
+                    id="email"
+                    type="email"
+                    {...register('email')}
+                    placeholder="Seu e-mail de acesso"
+                  />
+                </Input.Root>
               </div>
 
               <div className="mb-5">
-                <Label htmlFor="password">SENHA</Label>
-                <Input
-                  id="password"
-                  type="default"
-                  {...register('password')}
-                  placeholder="Senha de acesso"
-                />
+                <Input.Label>SENHA</Input.Label>
+                <Input.Root>
+                  <Input.Prefix>
+                    <AccessIcon className="text-gray-200" size={24} />
+                  </Input.Prefix>
+                  <Input.Control
+                    id="password"
+                    type="password"
+                    {...register('password')}
+                    placeholder="Senha de acesso"
+                  />
+                </Input.Root>
               </div>
 
               <div className="mb-5">
-                <Label htmlFor="passwordConfirm">CONFIRMAR SENHA</Label>
-                <Input
-                  id="passwordConfirm"
-                  type="default"
-                  {...register('passwordConfirm')}
-                  placeholder="Confirme a senha"
-                />
+                <Input.Label>CONFIRMAR SENHA</Input.Label>
+                <Input.Root>
+                  <Input.Prefix>
+                    <AccessIcon className="text-gray-200" size={24} />
+                  </Input.Prefix>
+                  <Input.Control
+                    id="passwordConfirm"
+                    type="password"
+                    {...register('passwordConfirm')}
+                    placeholder="Confirme a senha"
+                  />
+                </Input.Root>
               </div>
             </div>
 
@@ -145,7 +170,7 @@ export function SignUp() {
                 disabled={isSubmitting}
                 className="w-full"
                 type="submit">
-                Acessar
+                Cadastrar
               </Button>
             </div>
           </form>
@@ -161,3 +186,4 @@ export function SignUp() {
     </>
   )
 }
+

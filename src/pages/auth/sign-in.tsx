@@ -2,13 +2,13 @@ import {useMutation} from '@tanstack/react-query'
 import {Helmet} from 'react-helmet-async'
 import {useForm} from 'react-hook-form'
 import {Link, useSearchParams} from 'react-router-dom'
+import {Mail02Icon, AccessIcon} from 'hugeicons-react'
 import {toast} from 'sonner'
 import {z} from 'zod'
 
 import {signIn} from '@/api/sign-in'
 import {Button} from '@/components/ui/Button'
-import {Input} from '@/components/ui/Input'
-import {Label} from '@/components/ui/Label'
+import * as Input from '@/components/ui/Input'
 
 const signInForm = z.object({
   email: z.string().email(),
@@ -68,25 +68,35 @@ export function SignIn() {
           </div>
 
           <form className="" onSubmit={handleSubmit(handleSignIn)}>
-            <div className='mt-11 mb-11'>
+            <div className="mt-11 mb-11">
               <div className="mb-5">
-                <Label htmlFor="email">E-MAIL</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  {...register('email')}
-                  placeholder="Seu e-mail cadastrado"
-                />
+                <Input.Label>E-MAIL</Input.Label>
+                <Input.Root>
+                  <Input.Prefix>
+                    <Mail02Icon className='text-gray-200' size={24}/>
+                  </Input.Prefix>
+                  <Input.Control
+                    id="email"
+                    type="email"
+                    {...register('email')}
+                    placeholder="Seu e-mail cadastrado"
+                  />
+                </Input.Root>
               </div>
 
               <div className="mb-5">
-                <Label htmlFor="password">SENHA</Label>
-                <Input
-                  id="password"
-                  type="default"
-                  {...register('password')}
-                  placeholder="Sua senha de acesso"
-                />
+                <Input.Label>SENHA</Input.Label>
+                <Input.Root>
+                  <Input.Prefix>
+                    <AccessIcon className='text-gray-200' size={24}/>
+                  </Input.Prefix>
+                  <Input.Control
+                    id="password"
+                    type="password"
+                    {...register('password')}
+                    placeholder="Sua senha de acesso"
+                  />
+                </Input.Root>
               </div>
             </div>
 
