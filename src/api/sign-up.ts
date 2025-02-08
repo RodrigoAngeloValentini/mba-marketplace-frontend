@@ -1,17 +1,14 @@
-import { api } from '@/lib/axios'
+import { api } from '../lib/axios'
 
-export interface signUpBody {
-  name: string,
-  phone: string,
-  email: string,
-  password: string,
+export interface SignInBody {
+  name: string;
+  phone: string;
+  email: string;
+  avatarId: string | null;
+  password: string;
+  passwordConfirmation: string
 }
 
-export async function signUp({
-  name,
-  phone,
-  email,
-  password,
-}: signUpBody) {
-  await api.post('/register', { email, name, phone, password })
+export async function signUp({ name, phone, email, avatarId, password, passwordConfirmation }: SignInBody) {
+  await api.post('/sellers', { name, phone, email, avatarId, password, passwordConfirmation })
 }

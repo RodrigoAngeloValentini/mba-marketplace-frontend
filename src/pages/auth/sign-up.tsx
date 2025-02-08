@@ -1,189 +1,108 @@
-import {useMutation} from '@tanstack/react-query'
-import {Helmet} from 'react-helmet-async'
-import {useForm} from 'react-hook-form'
-import {Link, useNavigate} from 'react-router-dom'
-import {toast} from 'sonner'
-import {z} from 'zod'
+import { useNavigate } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "sonner";
 
-import {signUp} from '@/api/sign-up'
-import {Button} from '@/components/ui/Button'
-import * as Input from '@/components/ui/Input'
-import {AccessIcon, Mail02Icon, UserIcon, CallIcon} from 'hugeicons-react'
+import { Button } from "../../components/button";
+import { Input } from "../../components/input";
+import { ImageUpload } from "../../components/image-upload";
+import { attachments } from "../../api/attachments";
+import { signUp } from "../../api/sign-up";
 
 const signUpForm = z.object({
-  name: z.string(),
-  phone: z.string(),
-  email: z.string().email(),
-  password: z.string(),
-  passwordConfirm: z.string()
-})
+  avatarId: z.string().nullable(),
+  name: z.string().min(1, { message: 'O nome precisa ter pelo menos 1 caractere.' }),
+  phone: z.string().min(1, { message: 'O telefone precisa ter pelo menos 1 caractere.' }),
+  email: z.string().email({ message: 'E-mail inválido.' }),
+  password: z.string().min(6, { message: 'A senha precisa ter pelo menos 6 caracteres.' }),
+  passwordConfirmation: z.string().min(6, { message: 'A senha precisa ter pelo menos 6 caracteres.' }),
+}).refine(data => data.password === data.passwordConfirmation, {
+  message: "As senhas precisam ser iguais.",
+  path: ["passwordConfirmation"],
+});
 
 type SignUpForm = z.infer<typeof signUpForm>
 
 export function SignUp() {
   const navigate = useNavigate()
 
+  const { mutateAsync: uploadImage } = useMutation({
+    mutationFn: attachments
+  })
+
+  const { mutateAsync: createSeller } = useMutation({
+    mutationFn: signUp,
+  })
+
   const {
     register,
     handleSubmit,
-    formState: {isSubmitting}
+    setValue,
+    formState: { isSubmitting, errors },
   } = useForm<SignUpForm>({
-    defaultValues: {
-      name: '',
-      phone: '',
-      email: '',
-      password: '',
-      passwordConfirm: ''
-    }
-  })
-
-  const {mutateAsync: registerFn} = useMutation({
-    mutationFn: signUp
+    resolver: zodResolver(signUpForm)
   })
 
   async function handleSignUp(data: SignUpForm) {
     try {
-      await registerFn({
-        name: data.name,
-        email: data.email,
-        password: data.password,
-        phone: data.phone
-      })
+      await createSeller(data)
 
-      toast.success('Cadastrado com sucesso!', {
-        action: {
-          label: 'Login',
-          onClick: () => navigate(`/sign-in?email=${data.email}`)
-        }
-      })
-    } catch (error) {
-      toast.error('Erro ao cadastrar.')
+      toast.success('Conta criada com sucesso.')
+      navigate('/sign-in')
+    } catch {
+      toast.error('Houve um erro ao criar sua conta.')
+    }
+  }
+
+  async function handleUploadImage(file: File | null) {
+    try {
+      if (!file) return
+
+      const response = await uploadImage({ files: [file] })
+
+      setValue('avatarId', response.data.attachments[0].id)
+
+      toast.success('Imagem enviada com sucesso.')
+    } catch {
+      toast.error('Erro ao fazer upload da imagem.')
     }
   }
 
   return (
-    <>
-      <Helmet title="Cadastro" />
+    <div className="flex flex-col w-full h-[calc(100vh-48px)] overflow-y-auto rounded-[32px] bg-shape-white px-20 py-[72px]">
+      <form className="flex flex-col gap-12 mb-20" onSubmit={handleSubmit(handleSignUp)}>
 
-      <div className="flex flex-col justify-between h-full gap-6">
-        <div className="flex flex-col">
-          <div className="flex flex-col gap-2">
-            <h1 className="text-2xl font-semibold tracking-tight text-gray-500">
-              Crie sua conta
-            </h1>
-            <p className="text-sm text-gray-300">
-              Informe os seus dados pessoais e de acesso
-            </p>
-          </div>
-
-          <form className="" onSubmit={handleSubmit(handleSignUp)}>
-            <div className="mt-11 mb-11">
-              <h4 className="text-xl font-semibold tracking-tight text-gray-500 mb-2">
-                Perfil
-              </h4>
-
-              <div className="mb-5">
-                <Input.Label>NOME</Input.Label>
-                <Input.Root>
-                  <Input.Prefix>
-                    <UserIcon className="text-gray-200" size={24} />
-                  </Input.Prefix>
-                  <Input.Control
-                    id="name"
-                    type="default"
-                    {...register('name')}
-                    placeholder="Seu nome completo"
-                  />
-                </Input.Root>
-              </div>
-
-              <div className="mb-5">
-                <Input.Label>TELEFONE</Input.Label>
-                <Input.Root>
-                  <Input.Prefix>
-                    <CallIcon className="text-gray-200" size={24} />
-                  </Input.Prefix>
-                  <Input.Control
-                    id="phone"
-                    type="tel"
-                    {...register('phone')}
-                    placeholder="(00) 00000-0000"
-                  />
-                </Input.Root>
-              </div>
-            </div>
-
-            <div className="mt-11 mb-11">
-              <h4 className="text-xl font-semibold tracking-tight text-gray-500 mb-2">
-                Acesso
-              </h4>
-
-              <div className="mb-5">
-                <Input.Label>E-MAIL</Input.Label>
-                <Input.Root>
-                  <Input.Prefix>
-                    <Mail02Icon className="text-gray-200" size={24} />
-                  </Input.Prefix>
-                  <Input.Control
-                    id="email"
-                    type="email"
-                    {...register('email')}
-                    placeholder="Seu e-mail de acesso"
-                  />
-                </Input.Root>
-              </div>
-
-              <div className="mb-5">
-                <Input.Label>SENHA</Input.Label>
-                <Input.Root>
-                  <Input.Prefix>
-                    <AccessIcon className="text-gray-200" size={24} />
-                  </Input.Prefix>
-                  <Input.Control
-                    id="password"
-                    type="password"
-                    {...register('password')}
-                    placeholder="Senha de acesso"
-                  />
-                </Input.Root>
-              </div>
-
-              <div className="mb-5">
-                <Input.Label>CONFIRMAR SENHA</Input.Label>
-                <Input.Root>
-                  <Input.Prefix>
-                    <AccessIcon className="text-gray-200" size={24} />
-                  </Input.Prefix>
-                  <Input.Control
-                    id="passwordConfirm"
-                    type="password"
-                    {...register('passwordConfirm')}
-                    placeholder="Confirme a senha"
-                  />
-                </Input.Root>
-              </div>
-            </div>
-
-            <div className="">
-              <Button
-                variant="default"
-                disabled={isSubmitting}
-                className="w-full"
-                type="submit">
-                Cadastrar
-              </Button>
-            </div>
-          </form>
+        <div className="flex flex-col gap-2">
+          <h1 className="text-title-md font-sans">Crie sua conta</h1>
+          <p className="text-body-sm font-poppins text-grayscale-300">Informe os seus dados pessoais e de acesso</p>
         </div>
 
-        <div className="flex flex-col">
-          <p className="text-sm text-gray-300 mb-5">Já tem uma conta?</p>
-          <Button variant="outline" className="w-full" type="button">
-            <Link to="/sign-in">Acessar</Link>
-          </Button>
+        <div className="flex flex-col gap-5">
+          <p className="font-bold text-title-sm font-sans text-grayscale-500">Perfil</p>
+
+          <ImageUpload onFileSelect={handleUploadImage} error={errors.avatarId?.message} />
+          <Input id="name" type="text" placeholder="Seu nome completo" icon="User" label="Nome" error={errors.name?.message} {...register('name')} />
+          <Input id="phone" type="text" placeholder="(00) 00000-0000" icon="Phone" label="Telefone" error={errors.phone?.message} {...register('phone')} />
         </div>
+
+        <div className="flex flex-col gap-5 mt-4">
+          <p className="font-bold text-title-sm font-sans text-grayscale-500">Acesso</p>
+
+          <Input id="email" type="email" placeholder="Seu e-mail de acesso" icon="Mail" label="E-mail" error={errors.email?.message} {...register('email')} />
+          <Input id="password" type="password" placeholder="Senha de acesso" icon="LockKeyhole" label="Senha" error={errors.password?.message} {...register('password')} />
+          <Input id="passwordConfirmation" type="password" placeholder="Confirme a senha" icon="LockKeyhole" label="Confirmar senha" error={errors.passwordConfirmation?.message} {...register('passwordConfirmation')} />
+        </div>
+
+        <Button type="submit" className="w-full" size="lg" disabled={isSubmitting}>Cadastrar <ArrowRight /></Button>
+      </form>
+
+      <div className="flex flex-col gap-5 mt-auto">
+        <span className="text-body-md font-poppins text-grayscale-300">Já tem uma conta?</span>
+        <Button variant="outline" size="lg" onClick={() => navigate('/sign-in')}>Acessar <ArrowRight /></Button>
       </div>
-    </>
+    </div>
   )
 }
-

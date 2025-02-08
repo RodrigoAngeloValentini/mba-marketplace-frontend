@@ -1,124 +1,69 @@
-import {useMutation} from '@tanstack/react-query'
-import {Helmet} from 'react-helmet-async'
-import {useForm} from 'react-hook-form'
-import {Link, useSearchParams} from 'react-router-dom'
-import {Mail02Icon, AccessIcon} from 'hugeicons-react'
-import {toast} from 'sonner'
-import {z} from 'zod'
+import { useNavigate } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
-import {signIn} from '@/api/sign-in'
-import {Button} from '@/components/ui/Button'
-import * as Input from '@/components/ui/Input'
+import { Button } from "../../components/button";
+import { Input } from "../../components/input";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { signIn } from "../../api/sign-in";
+import { toast } from "sonner";
 
 const signInForm = z.object({
-  email: z.string().email(),
-  password: z.string()
+  email: z.string().email({ message: 'E-mail inválido.' }),
+  password: z.string().min(1, { message: 'A senha é obrigatória.' }),
 })
 
 type SignInForm = z.infer<typeof signInForm>
 
 export function SignIn() {
-  const [searchParams] = useSearchParams()
+  const navigate = useNavigate()
+
+  const { mutateAsync: authenticate } = useMutation({
+    mutationFn: signIn,
+  })
 
   const {
     register,
     handleSubmit,
-    formState: {isSubmitting}
+    formState: { isSubmitting, errors },
   } = useForm<SignInForm>({
-    defaultValues: {
-      email: searchParams.get('email') ?? '',
-      password: ''
-    }
-  })
-
-  const {mutateAsync: authenticate} = useMutation({
-    mutationFn: signIn
+    resolver: zodResolver(signInForm)
   })
 
   async function handleSignIn(data: SignInForm) {
     try {
-      await authenticate({email: data.email})
+      await authenticate(data)
 
-      toast.success('Enviamos um link de autenticação para seu e-mail.', {
-        action: {
-          label: 'Reenviar',
-          onClick: () => {
-            handleSignIn(data)
-          }
-        }
-      })
-    } catch (error) {
+      navigate('/')
+      toast.success('Autenticado com sucesso.')
+    } catch {
       toast.error('Credenciais inválidas.')
     }
   }
 
   return (
-    <>
-      <Helmet title="Login" />
+    <div className="flex flex-col w-full h-full rounded-[32px] bg-shape-white px-20 py-[72px]">
+      <form className="flex flex-col gap-12 mb-20" onSubmit={handleSubmit(handleSignIn)}>
 
-      <div className="flex flex-col justify-between h-full gap-6">
-        <div className="flex flex-col">
-          <div className="flex flex-col gap-2">
-            <h1 className="text-2xl font-semibold tracking-tight text-gray-500">
-              Acesse sua conta
-            </h1>
-            <p className="text-sm text-gray-300">
-              Informe seu e-mail e senha para entrar
-            </p>
-          </div>
-
-          <form className="" onSubmit={handleSubmit(handleSignIn)}>
-            <div className="mt-11 mb-11">
-              <div className="mb-5">
-                <Input.Label>E-MAIL</Input.Label>
-                <Input.Root>
-                  <Input.Prefix>
-                    <Mail02Icon className='text-gray-200' size={24}/>
-                  </Input.Prefix>
-                  <Input.Control
-                    id="email"
-                    type="email"
-                    {...register('email')}
-                    placeholder="Seu e-mail cadastrado"
-                  />
-                </Input.Root>
-              </div>
-
-              <div className="mb-5">
-                <Input.Label>SENHA</Input.Label>
-                <Input.Root>
-                  <Input.Prefix>
-                    <AccessIcon className='text-gray-200' size={24}/>
-                  </Input.Prefix>
-                  <Input.Control
-                    id="password"
-                    type="password"
-                    {...register('password')}
-                    placeholder="Sua senha de acesso"
-                  />
-                </Input.Root>
-              </div>
-            </div>
-
-            <div className="">
-              <Button
-                variant="default"
-                disabled={isSubmitting}
-                className="w-full"
-                type="submit">
-                Acessar
-              </Button>
-            </div>
-          </form>
+        <div className="flex flex-col gap-2">
+          <h1 className="text-title-md font-sans">Acesse sua conta</h1>
+          <p className="text-body-sm font-poppins text-grayscale-300">Informe seu e-mail e senha para entrar</p>
         </div>
 
-        <div className="flex flex-col">
-          <p className="text-sm text-gray-300 mb-5">Ainda não tem uma conta?</p>
-          <Button variant="outline" className="w-full" type="button">
-            <Link to="/sign-up">Cadastrar</Link>
-          </Button>
+        <div className="flex flex-col gap-5">
+          <Input id="email" type="email" placeholder="Seu e-mail cadastrado" icon="Mail" label="E-mail" error={errors.email?.message} {...register('email')} />
+          <Input id="password" type="password" placeholder="Sua senha de acesso" icon="LockKeyhole" label="Senha" error={errors.password?.message} {...register('password')} />
         </div>
+
+        <Button className="w-full" size="lg" disabled={isSubmitting}>Acessar <ArrowRight /></Button>
+      </form>
+
+      <div className="flex flex-col gap-5 mt-auto">
+        <span className="text-body-md font-poppins text-grayscale-300">Ainda não tem uma conta?</span>
+        <Button variant="outline" size="lg" onClick={() => navigate('/sign-up')}>Cadastrar <ArrowRight /></Button>
       </div>
-    </>
+    </div >
   )
 }

@@ -1,15 +1,24 @@
-import { Link, LinkProps, useLocation } from 'react-router-dom'
+import { Link, useLocation } from "react-router-dom";
+import { cn } from "../lib/utils";
+import { icons } from "lucide-react";
+import Icon from "./icon";
 
-export type NavLinkProps = LinkProps
+interface NavLinkProps {
+  children: React.ReactNode
+  to: string
+  icon?: keyof typeof icons
+}
 
-export function NavLink(props: NavLinkProps) {
+export function NavLink({ to, icon, children }: NavLinkProps) {
   const { pathname } = useLocation()
 
   return (
-    <Link
-      data-current={pathname === props.to}
-      className="flex h-10 items-center gap-8 rounded-md px-4 text-sm font-medium text-gray-300 hover:text-orange-base data-[current=true]:text-orange-base data-[current=true]:bg-shape"
-      {...props}
-    />
+    <Link className={cn("flex items-center gap-2 text-action-sm h-10 font-poppins rounded-[10px] px-4", {
+      "bg-shape-shape text-orange-base": pathname === to,
+      "bg-transparent text-grayscale-300 hover:bg-shape-shape": pathname !== to
+    })} to={to}>
+      {icon && <Icon name={icon} size={20} />}
+      {children}
+    </Link>
   )
 }

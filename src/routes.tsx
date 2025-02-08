@@ -1,15 +1,15 @@
-import {createBrowserRouter} from 'react-router-dom'
+import { createBrowserRouter } from 'react-router-dom'
 
-import {AppLayout} from './pages/_layouts/app'
-import {AuthLayout} from './pages/_layouts/auth'
-import {NotFound} from './pages/404'
-import {Dashboard} from './pages/app/dashboard'
-import {ProductNew} from './pages/app/productNew'
-import {ProductEdit} from './pages/app/productEdit'
-import {Products} from './pages/app/products'
-import {SignIn} from './pages/auth/sign-in'
-import {SignUp} from './pages/auth/sign-up'
-import {Error} from './pages/error'
+import { AuthLayout } from './pages/_layouts/auth'
+import { SignIn } from './pages/auth/sign-in'
+import { NotFound } from './pages/404'
+import { Error } from './pages/error'
+import { SignUp } from './pages/auth/sign-up'
+import { AppLayout } from './pages/_layouts/app'
+import { Dashboard } from './pages/app/dashboard/dashboard'
+import { Products } from './pages/app/products/products'
+import { NewProduct } from './pages/app/new-product/new-product'
+import { UpdateProduct } from './pages/app/update-product/update-product'
 
 export const router = createBrowserRouter([
   {
@@ -19,21 +19,21 @@ export const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <Dashboard />
-      },
-      {
-        path: '/products/edit/:slug',
-        element: <ProductEdit />
-      },
-      {
-        path: '/products/new',
-        element: <ProductNew />
+        element: <Dashboard />,
       },
       {
         path: '/products',
-        element: <Products />
+        element: <Products />,
+      },
+      {
+        path: '/products/new',
+        element: <NewProduct />
+      },
+      {
+        path: '/products/:id',
+        element: <UpdateProduct />
       }
-    ]
+    ],
   },
   {
     path: '/',
@@ -41,16 +41,16 @@ export const router = createBrowserRouter([
     children: [
       {
         path: '/sign-in',
-        element: <SignIn />
+        element: <SignIn />,
       },
       {
         path: '/sign-up',
-        element: <SignUp />
-      }
-    ]
+        element: <SignUp />,
+      },
+    ],
   },
   {
     path: '*',
-    element: <NotFound />
-  }
+    element: <NotFound />,
+  },
 ])
